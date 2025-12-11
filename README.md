@@ -18,8 +18,6 @@ A modern, fully customizable Flutter overlay-based Snack Notification System tha
     ✨ Custom leading widgets
     ✨ Light & dark theme awareness
 
-Perfect for replacing Flutter’s default SnackBar with a dynamic, beautiful, positionable notification flow.  aita paragraph akare dau
-
 
 ---
 
