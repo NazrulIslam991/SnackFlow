@@ -1,12 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-enum SnackPosition { top, bottom, center, left, right }
+/// Defines the possible screen positions where a [SnackFlow] notification can appear.
+enum SnackPosition {
+  /// Appears at the top center of the screen.
+  top,
 
-enum VerticalPosition { top, middle, bottom }
+  /// Appears at the bottom center of the screen (Default).
+  bottom,
 
+  /// Appears at the exact center of the screen.
+  center,
+
+  /// Appears attached to the left side of the screen.
+  left,
+
+  /// Appears attached to the right side of the screen.
+  right
+}
+
+/// Defines the vertical alignment for notifications positioned at [SnackPosition.left] or [SnackPosition.right].
+enum VerticalPosition {
+  /// Aligned near the top edge of the screen.
+  top,
+
+  /// Aligned in the middle vertically.
+  middle,
+
+  /// Aligned near the bottom edge of the screen (Default).
+  bottom
+}
+
+// Global OverlayEntry reference to handle single instance dismissal
 OverlayEntry? _currentOverlayEntry;
 
+/// A utility class to easily display custom, highly configurable snack bar-style notifications
+/// (often called 'Snack flows') across the application using Flutter Overlays.
 class SnackFlow {
   static void _showCustomOverlay(
     BuildContext context,
@@ -121,13 +150,11 @@ class SnackFlow {
         Widget snackContent = Material(
           color: Colors.transparent,
           child: Container(
-            margin:
-                position == SnackPosition.left ||
+            margin: position == SnackPosition.left ||
                     position == SnackPosition.right
                 ? const EdgeInsets.symmetric(horizontal: 16)
                 : const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            constraints:
-                position == SnackPosition.left ||
+            constraints: position == SnackPosition.left ||
                     position == SnackPosition.right
                 ? BoxConstraints(
                     maxWidth: MediaQuery.of(context).size.width * 0.6,
@@ -237,6 +264,24 @@ class SnackFlow {
     });
   }
 
+  /// Displays a standard, neutral notification.
+  ///
+  /// This method is highly configurable, allowing custom colors, icons, actions,
+  /// and positioning via [position] and [verticalPosition].
+  ///
+  /// Parameters:
+  /// * [context]: The BuildContext used to show the overlay.
+  /// * [message]: The text message displayed in the notification.
+  /// * [backgroundColor]: The background color of the notification badge (Default: Dark Blue/Black).
+  /// * [textColor]: The color of the text and icons (Default: White).
+  /// * [icon]/[leading]: Optional leading icon or custom widget.
+  /// * [duration]: How long the notification stays visible (Default: 3 seconds).
+  /// * [borderRadius]: Corner radius of the badge.
+  /// * [position]: Where the badge appears on the screen (Default: bottom).
+  /// * [actionLabel]/[onAction]: Button label and callback for an action button.
+  /// * [showClose]: If true, shows a close 'X' button.
+  /// * [onDismiss]: Callback executed when the notification is manually dismissed or times out.
+  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
   static void show(
     BuildContext context,
     String message, {
@@ -271,6 +316,13 @@ class SnackFlow {
     );
   }
 
+  /// Displays a success notification with a distinct green background and check icon.
+  ///
+  /// Parameters:
+  /// * [context]: The BuildContext used to show the overlay.
+  /// * [message]: The text message displayed.
+  /// * [position]: Where the badge appears on the screen (Default: bottom).
+  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
   static void success(
     BuildContext context,
     String message, {
@@ -298,6 +350,13 @@ class SnackFlow {
     );
   }
 
+  /// Displays a warning/failed notification with an orange background and warning icon.
+  ///
+  /// Parameters:
+  /// * [context]: The BuildContext used to show the overlay.
+  /// * [message]: The text message displayed.
+  /// * [position]: Where the badge appears on the screen (Default: bottom).
+  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
   static void failed(
     BuildContext context,
     String message, {
@@ -325,6 +384,13 @@ class SnackFlow {
     );
   }
 
+  /// Displays an error notification with a distinct red background and error icon.
+  ///
+  /// Parameters:
+  /// * [context]: The BuildContext used to show the overlay.
+  /// * [message]: The text message displayed.
+  /// * [position]: Where the badge appears on the screen (Default: bottom).
+  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
   static void error(
     BuildContext context,
     String message, {
