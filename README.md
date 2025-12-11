@@ -1,4 +1,6 @@
-# snackflow
+# SnackFlow
+
+---
 
 | Pub.dev | License | Platform |
 | :---: | :---: | :---: |
@@ -8,15 +10,7 @@
 
 ## Features
 
-A modern, fully customizable Flutter overlay-based Snack Notification System that supports:
-
-    ✨ Multiple screen positions
-    ✨ Slide animations
-    ✨ Undo / Action buttons
-    ✨ Left / Right / Center floating snack badges
-    ✨ Haptic feedback
-    ✨ Custom leading widgets
-    ✨ Light & dark theme awareness
+A modern and fully customizable Flutter snack notification system that uses overlays to display beautiful, smooth alerts on any screen. It supports multiple screen positions, stylish slide animations, and optional action or undo buttons. You can show left, right, or center floating snack badges, add gentle haptic feedback, and even attach your own custom leading widgets. The system is also theme-aware, automatically adapting to both light and dark modes for a polished and consistent user experience.
 
 
 ---
@@ -25,10 +19,9 @@ A modern, fully customizable Flutter overlay-based Snack Notification System tha
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/32e55d62-2183-4bbf-a588-a2de1d7b00fb"
-       width="400"
-       alt="Demo GIF">
+  <img src="https://github.com/user-attachments/assets/4888f460-4c0e-4bb0-9467-302371c51e40" alt="Your GIF or image description" width="250" height="400" />
 </p>
+
 
 
 
