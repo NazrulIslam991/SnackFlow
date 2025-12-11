@@ -209,17 +209,17 @@ SnackFlow.show(
 
 ### License
 
-This package is released under the MIT License — free for commercial and personal use.
+    This package is released under the MIT License — free for commercial and personal use.
 
 
 ## Additional Information 
 
 ### Reporting Issues
-If you encounter any bugs or have feature requests, please feel free to **file an issue** on the [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
+    If you encounter any bugs or have feature requests, please feel free to **file an issue** on the [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
 
 ### Contributing
-Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
+    Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
 
 ### Version History
-For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
+    For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
 
