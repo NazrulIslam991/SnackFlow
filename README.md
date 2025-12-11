@@ -197,6 +197,7 @@ Reporting Issues
 ---
 
 Version History
+---
   For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
 
 ---
