@@ -1,39 +1,227 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# snackflow
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+| Pub.dev | License | Platform |
+| :---: | :---: | :---: |
+| [![pub package](https://img.shields.io/pub/v/snackflow.svg)](https://pub.dev/packages/snackflow) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) | [![Platform](https://img.shields.io/badge/platform-flutter-blue.svg)](https://flutter.dev) |
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
-
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+---
 
 ## Features
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+A modern, fully customizable Flutter overlay-based Snack Notification System that supports:
 
-## Getting started
+    ✨ Multiple screen positions
+    ✨ Slide animations
+    ✨ Undo / Action buttons
+    ✨ Left / Right / Center floating snack badges
+    ✨ Haptic feedback
+    ✨ Custom leading widgets
+    ✨ Light & dark theme awareness
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Perfect for replacing Flutter’s default SnackBar with a dynamic, beautiful, positionable notification flow.  aita paragraph akare dau
 
-## Usage
 
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
+---
 
-```dart
-const like = 'sample';
+## Demo
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/32e55d62-2183-4bbf-a588-a2de1d7b00fb"
+       width="400"
+       alt="Demo GIF">
+</p>
+
+
+
+---
+
+## Getting started 
+
+### Installation
+
+## pubspec.yaml
+
+```yaml
+dependencies:
+  snackflow: <latest_version>
 ```
 
-## Additional information
+2.  **Run `flutter pub get`** in your terminal.
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+### Prerequisites
+
+* Flutter SDK: `>=3.0.0`
+* Dart SDK: `>=2.18.0`
+---
+
+## Import
+```dart
+import 'package:snackflow/snackflow.dart';
+```
+
+
+## Quick Usage 
+
+### 1. Basic show()
+
+```dart
+SnackFlow.show(
+  context,
+  "This is a default info message.",
+);
+```
+
+### 2. Basic success()
+
+```dart
+SnackFlow.success(
+  context,
+  "Profile updated successfully!",
+   duration: const Duration(seconds: 4),
+);
+
+```
+
+
+### 3. Basic failed()
+
+```dart
+SnackFlow.failed(
+   context,
+   "Warning: Something went wrong.",
+);
+
+```
+
+### 4. Basic error()
+
+```dart
+SnackFlow.error(context, "Network disconnected!");
+
+```
+
+### 5. Top Position with Action Button (UNDO) and Close Button
+
+```dart
+SnackFlow.show(
+  context,
+  "Saved! You can undo.",
+   position: SnackPosition.top, //  Set position to Top
+  actionLabel: "UNDO", // Add action button
+  onAction: () {
+     HapticFeedback.lightImpact();
+     // Action logic goes here
+    },
+    showClose: true, // Show the 'X' button
+ );
+
+```
+
+### 6. Left Position, vertically aligned to the Bottom
+
+
+```dart
+SnackFlow.success(
+   context,
+  "New mail received!",
+   position: SnackPosition.left, //  Set position to Left
+   verticalPosition: VerticalPosition .bottom, //  Vertically Bottom alignment
+  duration: const Duration(seconds: 4),
+);
+
+```
+
+
+### 7. Right Position, vertically aligned to the Middle
+
+
+```dart
+SnackFlow.error(
+   context,
+  "Access Denied!",
+  position: SnackPosition.right, //  Set position to Right
+  verticalPosition: VerticalPosition  .middle, //  Vertically Middle alignment
+);
+
+```
+
+### 8 Custom: Center Position
+
+
+```dart
+SnackFlow.failed(
+   context,
+   "Upload failed!",
+   position: SnackPosition.center, // Set position to Center
+ );
+
+```
+
+### Full signature:
+
+```dart
+SnackFlow.show(
+  BuildContext context,
+  String message, {
+  Color? backgroundColor,
+  Color? textColor,
+  IconData? icon,
+  Widget? leading,
+  Duration duration = const Duration(seconds: 3),
+  double borderRadius = 10,
+  SnackPosition position = SnackPosition.bottom,
+  String? actionLabel,
+  VoidCallback? onAction,
+  VoidCallback? onDismiss,
+  bool showClose = false,
+  VerticalPosition verticalPosition = VerticalPosition.bottom,
+});
+
+
+```
+
+
+## Properties Reference
+
+| Property / Method    | Type             | Default / Description                                    |
+| -------------------- | ---------------- | -------------------------------------------------------- |
+| **message**          | String           | Text to display in the snack                             |
+| **backgroundColor**  | Color?           | Badge background color                                   |
+| **textColor**        | Color?           | Text & icon color; default white                         |
+| **icon**             | IconData?        | Optional leading icon                                    |
+| **leading**          | Widget?          | Optional custom leading widget                           |
+| **duration**         | Duration         | Auto-dismiss time; default 3s                            |
+| **borderRadius**     | double           | Rounded corners; default 10                              |
+| **position**         | SnackPosition    | top/bottom/center/left/right; default `bottom`           |
+| **verticalPosition** | VerticalPosition | For left/right: top/middle/bottom; default bottom        |
+| **actionLabel**      | String?          | Optional action button text (e.g., "UNDO")               |
+| **onAction**         | VoidCallback?    | Callback when action pressed                             |
+| **showClose**        | bool             | Show close “X”; default false                            |
+| **onDismiss**        | VoidCallback?    | Callback when snack is hidden                            |
+| **show()**           | Method           | Neutral/default notification; customizable colors & icon |
+| **success()**        | Method           | Success notification; green & check icon                 |
+| **failed()**         | Method           | Warning/failed notification; orange & warning icon       |
+| **error()**          | Method           | Error notification; red & error icon                     |
+
+
+---
+
+
+
+### License
+
+This package is released under the MIT License — free for commercial and personal use.
+
+
+## Additional Information 
+
+### Reporting Issues
+If you encounter any bugs or have feature requests, please feel free to **file an issue** on the [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
+
+### Contributing
+Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
+
+### Version History
+For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
+
