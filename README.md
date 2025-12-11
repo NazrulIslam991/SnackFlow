@@ -37,11 +37,12 @@ dependencies:
   snackflow: <latest_version>
 ```
 ---
-2.  run `flutter pub get` in your terminal.
----
+
+2. run `flutter pub get` in your terminal.
+
 
 ### Prerequisites
-
+---
 * Flutter SDK: `>=3.0.0`
 * Dart SDK: `>=2.18.0`
 
