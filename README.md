@@ -57,7 +57,7 @@ import 'package:snackflow/snackflow.dart';
 
 ## Quick Usage 
 ---
-### 1. Basic show()
+1. Basic show()
 
 ```dart
 SnackFlow.show(
@@ -66,7 +66,7 @@ SnackFlow.show(
 );
 ```
 
-### 2. Basic success()
+2. Basic success()
 
 ```dart
 SnackFlow.success(
@@ -78,7 +78,7 @@ SnackFlow.success(
 ```
 
 
-### 3. Basic failed()
+3. Basic failed()
 
 ```dart
 SnackFlow.failed(
@@ -88,14 +88,14 @@ SnackFlow.failed(
 
 ```
 
-### 4. Basic error()
+4. Basic error()
 
 ```dart
 SnackFlow.error(context, "Network disconnected!");
 
 ```
 
-### 5. Top Position with Action Button (UNDO) and Close Button
+5. Top Position with Action Button (UNDO) and Close Button
 
 ```dart
 SnackFlow.show(
@@ -112,7 +112,7 @@ SnackFlow.show(
 
 ```
 
-### 6. Left Position, vertically aligned to the Bottom
+6. Left Position, vertically aligned to the Bottom
 
 
 ```dart
@@ -127,7 +127,7 @@ SnackFlow.success(
 ```
 
 
-### 7. Right Position, vertically aligned to the Middle
+7. Right Position, vertically aligned to the Middle
 
 
 ```dart
@@ -140,7 +140,7 @@ SnackFlow.error(
 
 ```
 
-### 8 Custom: Center Position
+8 Custom: Center Position
 
 
 ```dart
