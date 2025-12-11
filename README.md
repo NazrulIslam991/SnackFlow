@@ -1,19 +1,18 @@
 # SnackFlow
 
----
 
 | Pub.dev | License | Platform |
 | :---: | :---: | :---: |
 | [![pub package](https://img.shields.io/pub/v/snackflow.svg)](https://pub.dev/packages/snackflow) | [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) | [![Platform](https://img.shields.io/badge/platform-flutter-blue.svg)](https://flutter.dev) |
 
----
+
 
 ## Features
 
 A modern and fully customizable Flutter snack notification system that uses overlays to display beautiful, smooth alerts on any screen. It supports multiple screen positions, stylish slide animations, and optional action or undo buttons. You can show left, right, or center floating snack badges, add gentle haptic feedback, and even attach your own custom leading widgets. The system is also theme-aware, automatically adapting to both light and dark modes for a polished and consistent user experience.
 
 
----
+
 
 ## Demo
 
@@ -25,30 +24,25 @@ A modern and fully customizable Flutter snack notification system that uses over
 
 
 
-
-
-
 ### Installation
----
+
 1. pubspec.yaml
 
 ```yaml
 dependencies:
   snackflow: <latest_version>
 ```
----
 
 2. run `flutter pub get` in your terminal.
 
 
 ### Prerequisites
----
+
 * Flutter SDK: `>=3.0.0`
 * Dart SDK: `>=2.18.0`
 
 
 ## Import
----
 ```dart
 import 'package:snackflow/snackflow.dart';
 ```
@@ -56,7 +50,6 @@ import 'package:snackflow/snackflow.dart';
 
 
 ## Quick Usage 
----
 1. Basic show()
 
 ```dart
@@ -154,7 +147,6 @@ SnackFlow.failed(
 
 
 ## Properties Reference
----
 
 | Property / Method    | Type             | Default / Description                                    |
 | -------------------- | ---------------- | -------------------------------------------------------- |
@@ -177,14 +169,12 @@ SnackFlow.failed(
 | **error()**          | Method           | Error notification; red & error icon                     |
 
 
----
+
 
 
 
 ### License
----
     This package is released under the MIT License — free for commercial and personal use.
----
 
 ## Additional Information 
 
@@ -194,13 +184,11 @@ SnackFlow.failed(
     If you encounter any bugs or have feature requests, please feel free to **file an issue** on the 
 [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
 
----
 
 2. Version History
    
   For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
 
----
 
 ### Contributing
   Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
