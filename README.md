@@ -19,7 +19,7 @@ A modern and fully customizable Flutter snack notification system that uses over
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7618c273-495a-45d7-a4b1-68ad58b65370" alt="GIF Preview" width="250", height="400" />
+  <img src="https://github.com/user-attachments/assets/7618c273-495a-45d7-a4b1-68ad58b65370" alt="GIF Preview" width="250", height="500" />
 </p>
 
 
@@ -29,33 +29,35 @@ A modern and fully customizable Flutter snack notification system that uses over
 
 ---
 
-## Getting started 
-
 ### Installation
-
-## pubspec.yaml
+---
+1. pubspec.yaml
 
 ```yaml
 dependencies:
   snackflow: <latest_version>
 ```
-
+---
 2.  **Run `flutter pub get`** in your terminal.
+---
 
 ### Prerequisites
 
 * Flutter SDK: `>=3.0.0`
 * Dart SDK: `>=2.18.0`
+
 ---
 
 ## Import
+---
 ```dart
 import 'package:snackflow/snackflow.dart';
 ```
 
+---
 
 ## Quick Usage 
-
+---
 ### 1. Basic show()
 
 ```dart
@@ -151,31 +153,9 @@ SnackFlow.failed(
 
 ```
 
-### Full signature:
-
-```dart
-SnackFlow.show(
-  BuildContext context,
-  String message, {
-  Color? backgroundColor,
-  Color? textColor,
-  IconData? icon,
-  Widget? leading,
-  Duration duration = const Duration(seconds: 3),
-  double borderRadius = 10,
-  SnackPosition position = SnackPosition.bottom,
-  String? actionLabel,
-  VoidCallback? onAction,
-  VoidCallback? onDismiss,
-  bool showClose = false,
-  VerticalPosition verticalPosition = VerticalPosition.bottom,
-});
-
-
-```
-
 
 ## Properties Reference
+---
 
 | Property / Method    | Type             | Default / Description                                    |
 | -------------------- | ---------------- | -------------------------------------------------------- |
@@ -200,21 +180,25 @@ SnackFlow.show(
 
 ---
 
-
+---
 
 ### License
-
+---
     This package is released under the MIT License — free for commercial and personal use.
-
+---
 
 ## Additional Information 
 
+---
+
 ### Reporting Issues
     If you encounter any bugs or have feature requests, please feel free to **file an issue** on the 
-    [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
+[GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
+---
 
 ### Contributing
     Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
+---
 
 ### Version History
     For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
