@@ -19,7 +19,7 @@ A modern and fully customizable Flutter snack notification system that uses over
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7618c273-495a-45d7-a4b1-68ad58b65370" alt="GIF Preview" width="600" />
+  <img src="https://github.com/user-attachments/assets/7618c273-495a-45d7-a4b1-68ad58b65370" alt="GIF Preview" width="250", height="400" />
 </p>
 
 
