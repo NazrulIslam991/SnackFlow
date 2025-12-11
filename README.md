@@ -27,7 +27,6 @@ A modern and fully customizable Flutter snack notification system that uses over
 
 
 
----
 
 ### Installation
 ---
@@ -38,7 +37,7 @@ dependencies:
   snackflow: <latest_version>
 ```
 ---
-2.  **Run `flutter pub get`** in your terminal.
+2.  run `flutter pub get` in your terminal.
 ---
 
 ### Prerequisites
@@ -46,7 +45,6 @@ dependencies:
 * Flutter SDK: `>=3.0.0`
 * Dart SDK: `>=2.18.0`
 
----
 
 ## Import
 ---
@@ -54,7 +52,7 @@ dependencies:
 import 'package:snackflow/snackflow.dart';
 ```
 
----
+
 
 ## Quick Usage 
 ---
@@ -180,7 +178,7 @@ SnackFlow.failed(
 
 ---
 
----
+
 
 ### License
 ---
@@ -189,7 +187,6 @@ SnackFlow.failed(
 
 ## Additional Information 
 
----
 
 ### Reporting Issues
     If you encounter any bugs or have feature requests, please feel free to **file an issue** on the 
@@ -197,9 +194,10 @@ SnackFlow.failed(
 ---
 
 ### Contributing
-    Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
+  Contributions are always welcome! You can **fork the repository**, make your improvements, and submit a **pull request**. Let’s make this package better together. 
+  
 ---
 
 ### Version History
-    For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
+  For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
 
