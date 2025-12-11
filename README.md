@@ -189,15 +189,15 @@ SnackFlow.failed(
 ## Additional Information 
 
 
-Reporting Issues
----
+1. Reporting Issues
+
     If you encounter any bugs or have feature requests, please feel free to **file an issue** on the 
 [GitHub repository]( https://github.com/NazrulIslam991/SnackFlow).
 
 ---
 
-Version History
----
+2. Version History
+   
   For a complete history of changes, bug fixes, and updates, please refer to the `CHANGELOG.md` file included in this repository.
 
 ---
