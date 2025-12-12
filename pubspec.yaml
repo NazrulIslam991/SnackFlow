@@ -1,6 +1,6 @@
 name: snackflow
 description: "A modern and customizable Flutter snack notification system."
-version: 0.0.1
+version: 0.1.0
 repository: https://github.com/NazrulIslam991/SnackFlow
 license: MIT
 

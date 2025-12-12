@@ -1,5 +1,11 @@
+import 'dart:ui'; // For BackdropFilter
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
+// ----------------------------------------------------
+//  SnackFlow Utility Class and Enums
+// ----------------------------------------------------
 
 /// Defines the possible screen positions where a [SnackFlow] notification can appear.
 enum SnackPosition {
@@ -35,7 +41,7 @@ enum VerticalPosition {
 OverlayEntry? _currentOverlayEntry;
 
 /// A utility class to easily display custom, highly configurable snack bar-style notifications
-/// (often called 'Snack flows') across the application using Flutter Overlays.
+/// with a modern glass morphism design.
 class SnackFlow {
   static void _showCustomOverlay(
     BuildContext context,
@@ -44,15 +50,18 @@ class SnackFlow {
     Color? textColor,
     IconData? icon,
     Widget? leading,
-    Duration duration = const Duration(seconds: 3),
-    double borderRadius = 10,
+    Duration duration = const Duration(seconds: 4),
+    double borderRadius = 14,
     SnackPosition position = SnackPosition.bottom,
     String? actionLabel,
     VoidCallback? onAction,
     VoidCallback? onDismiss,
-    bool showClose = false,
+    bool showClose = true,
     VerticalPosition verticalPosition = VerticalPosition.bottom,
+    String? title, // The title is nullable here
+    Color? statusColor,
   }) {
+    // Dismiss previous overlay if it exists
     if (_currentOverlayEntry != null) {
       _currentOverlayEntry!.remove();
       _currentOverlayEntry = null;
@@ -60,21 +69,33 @@ class SnackFlow {
 
     HapticFeedback.mediumImpact();
 
-    final theme = Theme.of(context);
-    final isDark = theme.brightness == Brightness.dark;
+    // --- Core Customization Defaults (NO THEME MATCHING) ---
+
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final defaultBg = isDark ? const Color(0xFF34495E) : Colors.black;
-    final defaultText = isDark ? Colors.white : Colors.white;
+    // 1. Default Glass Base Color (User customizable via parameter)
+    // Fixed Dark base for glass effect by default
+    const Color defaultGlassBaseColor = Color(0xFF1A1A1A);
+    final bgColor = backgroundColor ?? defaultGlassBaseColor;
 
-    final bgColor = backgroundColor ?? defaultBg;
-    final txtColor = textColor ?? defaultText;
+    // 2. Text Color Logic: Use custom color, otherwise ensure readability against bgColor
+    var finalTxtColor = textColor;
+    if (finalTxtColor == null) {
+      // Calculate luminance to decide between black or white text
+      final isLightBackground = bgColor.computeLuminance() > 0.5;
+      finalTxtColor = isLightBackground ? Colors.black87 : Colors.white;
+    }
 
-    final overlay = Overlay.of(context);
+    final statusBgColor =
+        statusColor ?? const Color(0xFF3498DB); // Default Info Blue
 
+    // --- End Core Customization Defaults ---
+
+    // TickerProvider error workaround: use Overlay state
+    final overlayState = Overlay.of(context);
     final controller = AnimationController(
-      vsync: overlay,
-      duration: const Duration(milliseconds: 400),
+      vsync: overlayState as TickerProvider,
+      duration: const Duration(milliseconds: 500),
     );
 
     Offset beginOffset;
@@ -85,23 +106,23 @@ class SnackFlow {
 
     const double badgeApproximateHeight = 100;
 
+    // Position setup
     switch (position) {
       case SnackPosition.top:
         beginOffset = const Offset(0.0, -1.5);
         topPos = MediaQuery.of(context).padding.top + 10;
-        leftPos = 0;
-        rightPos = 0;
+        leftPos = 16;
+        rightPos = 16;
         break;
       case SnackPosition.bottom:
         beginOffset = const Offset(0.0, 1.5);
         bottomPos = 20;
-        leftPos = 0;
-        rightPos = 0;
+        leftPos = 16;
+        rightPos = 16;
         break;
-
       case SnackPosition.left:
         beginOffset = const Offset(-1.5, 0.0);
-        leftPos = 0;
+        leftPos = 16;
         if (verticalPosition == VerticalPosition.top) {
           topPos = MediaQuery.of(context).padding.top + 10;
         } else if (verticalPosition == VerticalPosition.bottom) {
@@ -110,10 +131,9 @@ class SnackFlow {
           topPos = screenHeight * 0.5 - (badgeApproximateHeight / 2);
         }
         break;
-
       case SnackPosition.right:
         beginOffset = const Offset(1.5, 0.0);
-        rightPos = 0;
+        rightPos = 16;
         if (verticalPosition == VerticalPosition.top) {
           topPos = MediaQuery.of(context).padding.top + 10;
         } else if (verticalPosition == VerticalPosition.bottom) {
@@ -122,16 +142,19 @@ class SnackFlow {
           topPos = screenHeight * 0.5 - (badgeApproximateHeight / 2);
         }
         break;
-
       case SnackPosition.center:
         beginOffset = Offset.zero;
+        leftPos = 16; // Setting the gap
+        rightPos = 16; // Setting the gap
+        topPos = screenHeight * 0.5 - (badgeApproximateHeight / 2);
         break;
     }
 
     final slideAnimation = Tween<Offset>(
       begin: beginOffset,
       end: Offset.zero,
-    ).animate(CurvedAnimation(parent: controller, curve: Curves.easeOutCubic));
+    ).animate(CurvedAnimation(
+        parent: controller, curve: Curves.fastEaseInToSlowEaseOut));
 
     void removeOverlay() {
       if (_currentOverlayEntry != null) {
@@ -147,91 +170,150 @@ class SnackFlow {
 
     final customContent = Builder(
       builder: (innerContext) {
+        // Use the current theme for general styling consistency (like fonts)
+        final theme = Theme.of(innerContext);
+
         Widget snackContent = Material(
           color: Colors.transparent,
-          child: Container(
-            margin: position == SnackPosition.left ||
-                    position == SnackPosition.right
-                ? const EdgeInsets.symmetric(horizontal: 16)
-                : const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            constraints: position == SnackPosition.left ||
-                    position == SnackPosition.right
-                ? BoxConstraints(
-                    maxWidth: MediaQuery.of(context).size.width * 0.6,
-                    minWidth: 100,
-                  )
-                : null,
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
-            decoration: BoxDecoration(
-              color: bgColor,
-              borderRadius: BorderRadius.circular(borderRadius),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withAlpha(0x7F),
-                  blurRadius: 20,
-                  spreadRadius: 1,
-                  offset: const Offset(0, 8),
-                ),
-              ],
-            ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (leading != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: leading,
-                  )
-                else if (icon != null)
-                  Padding(
-                    padding: const EdgeInsets.only(right: 12),
-                    child: Icon(icon, size: 22, color: txtColor),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(borderRadius),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(
+                  sigmaX: 10.0, sigmaY: 10.0), // Glass morphism Blur
+              child: Container(
+                constraints: position == SnackPosition.left ||
+                        position == SnackPosition.right
+                    ? BoxConstraints(
+                        maxWidth: MediaQuery.of(context).size.width * 0.7,
+                        minWidth: 100,
+                      )
+                    : null,
+                decoration: BoxDecoration(
+                  // Background color using the determined bgColor with transparency
+                  color: bgColor.withAlpha(
+                      (255 * 0.4).round()), // Semi-transparent background
+                  borderRadius: BorderRadius.circular(borderRadius),
+                  border: Border.all(
+                    color: statusBgColor
+                        .withAlpha((255 * 0.3).round()), // Subtle border
+                    width: 1.0,
                   ),
-                Flexible(
-                  child: Text(
-                    message,
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: txtColor,
-                      fontSize: 16,
-                      height: 1.3,
-                      fontWeight: FontWeight.w500,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withAlpha((255 * 0.25).round()),
+                      blurRadius: 20,
+                      spreadRadius: -5,
+                      offset: const Offset(0, 8),
                     ),
-                  ),
+                  ],
                 ),
-                if (actionLabel != null && onAction != null)
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: TextButton(
-                      onPressed: () {
-                        HapticFeedback.lightImpact();
-                        onAction();
-                        removeOverlay();
-                      },
-                      child: Text(
-                        actionLabel,
-                        style: TextStyle(
-                          color: txtColor,
-                          fontWeight: FontWeight.bold,
+                child: IntrinsicHeight(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // --- 1. Large Leading Section (Icon/Widget) ---
+                      Container(
+                        width: 60, // Fixed width for the icon section
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        decoration: BoxDecoration(
+                          color: statusBgColor.withAlpha(
+                              (255 * 0.7).round()), // Solid color section
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(borderRadius),
+                            bottomLeft: Radius.circular(borderRadius),
+                          ),
+                        ),
+                        child: Center(
+                          child: leading ??
+                              Icon(
+                                icon ?? Icons.info_outline_rounded,
+                                size: 28,
+                                color: finalTxtColor,
+                              ),
                         ),
                       ),
-                    ),
-                  ),
-                if (showClose)
-                  GestureDetector(
-                    onTap: () {
-                      HapticFeedback.lightImpact();
-                      removeOverlay();
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 12),
-                      child: Icon(
-                        Icons.close,
-                        size: 18,
-                        color: txtColor.withAlpha((255 * 0.7).round()),
+
+                      // --- 2. Content Section (Title & Message) ---
+                      Expanded(
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(16, 12, 12, 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: title != null
+                                ? MainAxisAlignment.start
+                                : MainAxisAlignment.center,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              // Check if title is NOT null before displaying
+                              if (title != null)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4.0),
+                                  child: Text(
+                                    title,
+                                    style:
+                                        theme.textTheme.titleMedium?.copyWith(
+                                      color: finalTxtColor,
+                                      fontSize: 17,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              Text(
+                                message, // Description
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: finalTxtColor
+                                      ?.withAlpha((255 * 0.9).round()),
+                                  fontSize: 14,
+                                  height: title != null ? 1.2 : 1.3,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                                maxLines: title != null
+                                    ? 2
+                                    : 3, // Allow more lines if no title
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+
+                      // --- 3. Action/Close Section ---
+                      if (actionLabel != null && onAction != null)
+                        TextButton(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            onAction();
+                            removeOverlay();
+                          },
+                          child: Text(
+                            actionLabel,
+                            style: TextStyle(
+                              color: finalTxtColor,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+
+                      if (showClose)
+                        GestureDetector(
+                          onTap: () {
+                            HapticFeedback.lightImpact();
+                            removeOverlay();
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.only(right: 12, left: 8),
+                            child: Icon(
+                              Icons.close,
+                              size: 18,
+                              color:
+                                  finalTxtColor?.withAlpha((255 * 0.7).round()),
+                            ),
+                          ),
+                        ),
+                    ],
                   ),
-              ],
+                ),
+              ),
             ),
           ),
         );
@@ -242,10 +324,6 @@ class SnackFlow {
 
     _currentOverlayEntry = OverlayEntry(
       builder: (context) {
-        if (position == SnackPosition.center) {
-          return Center(child: customContent);
-        }
-
         return Positioned(
           top: topPos,
           bottom: bottomPos,
@@ -256,51 +334,53 @@ class SnackFlow {
       },
     );
 
-    overlay.insert(_currentOverlayEntry!);
+    overlayState.insert(_currentOverlayEntry!);
     controller.forward();
 
+    // Auto-dismissal timer
     Future.delayed(duration, () {
       removeOverlay();
     });
   }
 
-  /// Displays a standard, neutral notification.
+  /// Displays a standard, neutral information notification.
   ///
-  /// This method is highly configurable, allowing custom colors, icons, actions,
-  /// and positioning via [position] and [verticalPosition].
+  /// This is the default style, often used for general information messages.
   ///
   /// Parameters:
-  /// * [context]: The BuildContext used to show the overlay.
-  /// * [message]: The text message displayed in the notification.
-  /// * [backgroundColor]: The background color of the notification badge (Default: Dark Blue/Black).
-  /// * [textColor]: The color of the text and icons (Default: White).
-  /// * [icon]/[leading]: Optional leading icon or custom widget.
-  /// * [duration]: How long the notification stays visible (Default: 3 seconds).
-  /// * [borderRadius]: Corner radius of the badge.
-  /// * [position]: Where the badge appears on the screen (Default: bottom).
-  /// * [actionLabel]/[onAction]: Button label and callback for an action button.
-  /// * [showClose]: If true, shows a close 'X' button.
-  /// * [onDismiss]: Callback executed when the notification is manually dismissed or times out.
-  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
+  /// * [context]: The BuildContext for the Overlay.
+  /// * [message]: The main content text to display.
+  /// * [title]: An optional bold title displayed above the message.
+  /// * [duration]: How long the notification should stay visible (default 4 seconds).
+  /// * [position]: The screen location where the notification appears (default [SnackPosition.bottom]).
+  /// * [actionLabel]: Optional text for an action button.
+  /// * [onAction]: The callback function executed when the action button is pressed.
+  /// * [onDismiss]: The callback function executed when the notification is closed (auto or manually).
+  /// * [leading]: A custom widget to display instead of the default icon.
+  /// * [backgroundColor]: Custom background color for the glass effect (defaults to dark base).
+  /// * [textColor]: Custom text color (defaults to white/black based on background luminance).
+  /// * [icon]: Custom icon to use in the status section (defaults to [Icons.info_outline_rounded]).
   static void show(
     BuildContext context,
     String message, {
-    Color backgroundColor = const Color(0xFF34495E),
-    Color textColor = Colors.white,
+    Color? backgroundColor,
+    Color? textColor,
     IconData? icon,
     Widget? leading,
-    Duration duration = const Duration(seconds: 3),
-    double borderRadius = 10,
+    Duration duration = const Duration(seconds: 4),
+    double borderRadius = 14,
     SnackPosition position = SnackPosition.bottom,
     String? actionLabel,
     VoidCallback? onAction,
-    bool showClose = false,
+    bool showClose = true,
     VoidCallback? onDismiss,
     VerticalPosition verticalPosition = VerticalPosition.bottom,
+    String? title,
   }) {
     _showCustomOverlay(
       context,
       message,
+      title: title,
       backgroundColor: backgroundColor,
       textColor: textColor,
       icon: icon,
@@ -313,32 +393,40 @@ class SnackFlow {
       showClose: showClose,
       onDismiss: onDismiss,
       verticalPosition: verticalPosition,
+      statusColor: const Color(0xFF3498DB), // Default Blue
     );
   }
 
-  /// Displays a success notification with a distinct green background and check icon.
+  /// Displays a success notification with a distinct green status color.
+  ///
+  /// This is typically used to confirm successful operations.
   ///
   /// Parameters:
-  /// * [context]: The BuildContext used to show the overlay.
-  /// * [message]: The text message displayed.
-  /// * [position]: Where the badge appears on the screen (Default: bottom).
-  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
+  /// * [context]: The BuildContext for the Overlay.
+  /// * [message]: The main content text to display.
+  /// * [title]: An optional bold title displayed above the message.
+  /// * [icon]: Custom icon to use in the status section (defaults to [Icons.check_circle_rounded]).
+  /// * [duration]: How long the notification should stay visible (default 4 seconds).
+  /// * [position]: The screen location where the notification appears (default [SnackPosition.bottom]).
+  /// * [onDismiss]: The callback function executed when the notification is closed.
   static void success(
     BuildContext context,
     String message, {
-    Color backgroundColor = const Color(0xFF27AE60),
-    Color textColor = Colors.white,
+    Color? backgroundColor,
+    Color? textColor,
     IconData icon = Icons.check_circle_rounded,
-    Duration duration = const Duration(seconds: 3),
-    double borderRadius = 10,
+    Duration duration = const Duration(seconds: 4),
+    double borderRadius = 14,
     SnackPosition position = SnackPosition.bottom,
     VoidCallback? onDismiss,
     VerticalPosition verticalPosition = VerticalPosition.bottom,
+    String? title,
   }) {
     HapticFeedback.mediumImpact();
     _showCustomOverlay(
       context,
       message,
+      title: title,
       backgroundColor: backgroundColor,
       textColor: textColor,
       icon: icon,
@@ -347,32 +435,40 @@ class SnackFlow {
       position: position,
       onDismiss: onDismiss,
       verticalPosition: verticalPosition,
+      statusColor: const Color(0xFF2ECC71), // Success Green
     );
   }
 
-  /// Displays a warning/failed notification with an orange background and warning icon.
+  /// Displays a warning or failed notification with an orange status color.
+  ///
+  /// Used for non-critical failures or cautionary messages.
   ///
   /// Parameters:
-  /// * [context]: The BuildContext used to show the overlay.
-  /// * [message]: The text message displayed.
-  /// * [position]: Where the badge appears on the screen (Default: bottom).
-  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
+  /// * [context]: The BuildContext for the Overlay.
+  /// * [message]: The main content text to display.
+  /// * [title]: An optional bold title displayed above the message.
+  /// * [icon]: Custom icon to use in the status section (defaults to [Icons.warning_rounded]).
+  /// * [duration]: How long the notification should stay visible (default 5 seconds).
+  /// * [position]: The screen location where the notification appears (default [SnackPosition.center]).
+  /// * [onDismiss]: The callback function executed when the notification is closed.
   static void failed(
     BuildContext context,
     String message, {
-    Color backgroundColor = const Color(0xFFE67E22),
-    Color textColor = Colors.white,
+    Color? backgroundColor,
+    Color? textColor,
     IconData icon = Icons.warning_rounded,
-    Duration duration = const Duration(seconds: 3),
-    double borderRadius = 10,
-    SnackPosition position = SnackPosition.bottom,
+    Duration duration = const Duration(seconds: 5),
+    double borderRadius = 14,
+    SnackPosition position = SnackPosition.center,
     VoidCallback? onDismiss,
     VerticalPosition verticalPosition = VerticalPosition.bottom,
+    String? title,
   }) {
     HapticFeedback.mediumImpact();
     _showCustomOverlay(
       context,
       message,
+      title: title,
       backgroundColor: backgroundColor,
       textColor: textColor,
       icon: icon,
@@ -381,32 +477,40 @@ class SnackFlow {
       position: position,
       onDismiss: onDismiss,
       verticalPosition: verticalPosition,
+      statusColor: const Color(0xFFF39C12), // Warning Orange
     );
   }
 
-  /// Displays an error notification with a distinct red background and error icon.
+  /// Displays a critical error notification with a red status color.
+  ///
+  /// Typically used for hard failures or application errors.
   ///
   /// Parameters:
-  /// * [context]: The BuildContext used to show the overlay.
-  /// * [message]: The text message displayed.
-  /// * [position]: Where the badge appears on the screen (Default: bottom).
-  /// * [verticalPosition]: Vertical alignment for left/right positions (Default: bottom).
+  /// * [context]: The BuildContext for the Overlay.
+  /// * [message]: The main content text to display.
+  /// * [title]: An optional bold title displayed above the message.
+  /// * [icon]: Custom icon to use in the status section (defaults to [Icons.error_rounded]).
+  /// * [duration]: How long the notification should stay visible (default 6 seconds).
+  /// * [position]: The screen location where the notification appears (default [SnackPosition.top]).
+  /// * [onDismiss]: The callback function executed when the notification is closed.
   static void error(
     BuildContext context,
     String message, {
-    Color backgroundColor = const Color(0xFFC0392B),
-    Color textColor = Colors.white,
+    Color? backgroundColor,
+    Color? textColor,
     IconData icon = Icons.error_rounded,
-    Duration duration = const Duration(seconds: 3),
-    double borderRadius = 10,
-    SnackPosition position = SnackPosition.bottom,
+    Duration duration = const Duration(seconds: 6),
+    double borderRadius = 14,
+    SnackPosition position = SnackPosition.top,
     VoidCallback? onDismiss,
     VerticalPosition verticalPosition = VerticalPosition.bottom,
+    String? title,
   }) {
     HapticFeedback.mediumImpact();
     _showCustomOverlay(
       context,
       message,
+      title: title,
       backgroundColor: backgroundColor,
       textColor: textColor,
       icon: icon,
@@ -415,6 +519,7 @@ class SnackFlow {
       position: position,
       onDismiss: onDismiss,
       verticalPosition: verticalPosition,
+      statusColor: const Color(0xFFE74C3C), // Error Red
     );
   }
 }
