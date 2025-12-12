@@ -69,7 +69,7 @@ import 'package:snackflow/snackflow.dart';
 ```dart
 SnackFlow.show(
   context,
-  "This is a default info message.",
+  "Data loaded successfully.",
 );
 ```
 
@@ -78,84 +78,155 @@ SnackFlow.show(
 ```dart
 SnackFlow.success(
   context,
-  "Profile updated successfully!",
-   duration: const Duration(seconds: 4),
+  "Payment completed. Thank you!",
+);
+
+
+```
+
+3. Basic error()
+
+```dart
+SnackFlow.error(
+  context,
+  "Server connection lost. Please try again.",
 );
 
 ```
 
-
-3. Basic failed()
+4. Basic failed()
 
 ```dart
 SnackFlow.failed(
-   context,
-   "Warning: Something went wrong.",
+  context,
+  "Input verification failed due to an error.",
 );
 
-```
-
-4. Basic error()
-
-```dart
-SnackFlow.error(context, "Network disconnected!");
 
 ```
 
-5. Top Position with Action Button (UNDO) and Close Button
+
+5. Top Position ( using show() method)
 
 ```dart
 SnackFlow.show(
   context,
-  "Saved! You can undo.",
-   position: SnackPosition.top, //  Set position to Top
-  actionLabel: "UNDO", // Add action button
-  onAction: () {
-     HapticFeedback.lightImpact();
-     // Action logic goes here
-    },
-    showClose: true, // Show the 'X' button
- );
+  "This notification is visible at the top of the screen.",
+  position: SnackPosition.top,
+);
+
 
 ```
 
-6. Left Position, vertically aligned to the Bottom
+6. Center Position ( using show() method)
+
+
+```dart
+SnackFlow.show(
+  context,
+  "This notification will be shown in the exact center.",
+  position: SnackPosition.center,
+);
+
+
+```
+
+
+7. Left Position, Top aligned ( using show() method)
+
+
+```dart
+SnackFlow.show(
+  context,
+  "Left side, aligned to the top.",
+  position: SnackPosition.left,
+  verticalPosition: VerticalPosition.top,
+);
+
+
+```
+
+8 Right Position, Middle aligned ( using success() method)
 
 
 ```dart
 SnackFlow.success(
-   context,
-  "New mail received!",
-   position: SnackPosition.left, //  Set position to Left
-   verticalPosition: VerticalPosition .bottom, //  Vertically Bottom alignment
-  duration: const Duration(seconds: 4),
+  context,
+  "Right side, aligned to the middle vertically.",
+  position: SnackPosition.right,
+  verticalPosition: VerticalPosition.middle,
 );
+
 
 ```
 
-
-7. Right Position, vertically aligned to the Middle
+9 Action Button Example ( using show() method)
 
 
 ```dart
-SnackFlow.error(
-   context,
-  "Access Denied!",
-  position: SnackPosition.right, //  Set position to Right
-  verticalPosition: VerticalPosition  .middle, //  Vertically Middle alignment
+SnackFlow.show(
+  context,
+  "Do you want to update your profile now?",
+  actionLabel: "Update",
+  onAction: () {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Action button clicked!')),
+    );
+  },
 );
+
 
 ```
 
-8 Custom: Center Position
+10 Leading Widget & Title ( using show() method)
+
+
+```dart
+SnackFlow.show(
+  context,
+  "You have received a new message.",
+  leading: const CircleAvatar(
+    backgroundColor: Colors.redAccent,
+    child: Icon(Icons.mail, color: Colors.white, size: 20),
+  ),
+  title: "New Message!",
+);
+
+
+```
+
+11 Custom Colors ( using failed() method)
 
 
 ```dart
 SnackFlow.failed(
-   context,
-   "Upload failed!",
-   position: SnackPosition.center, // Set position to Center
- );
+  context,
+  "White background and dark blue text.",
+  backgroundColor: Colors.white,
+  textColor: Colors.blueGrey.shade900,
+  duration: const Duration(seconds: 7),
+  title: "Custom Look",
+);
+
+
+```
+
+12 On Dismiss Callback ( using error() method)
+
+
+```dart
+SnackFlow.error(
+  context,
+  "Something will happen when this notification is closed.",
+  title: "Timer On",
+  duration: const Duration(seconds: 3),
+  onDismiss: () {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Notification dismissed.')),
+    );
+  },
+);
+
 
 ```
 
