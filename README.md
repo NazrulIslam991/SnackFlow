@@ -64,7 +64,8 @@ import 'package:snackflow/snackflow.dart';
 
 
 ## Quick Usage 
-1. Basic show()
+
+1. Basic show() method.
 
 ```dart
 SnackFlow.show(
@@ -73,7 +74,7 @@ SnackFlow.show(
 );
 ```
 
-2. Basic success()
+2. Basic success() method.
 
 ```dart
 SnackFlow.success(
@@ -84,7 +85,7 @@ SnackFlow.success(
 
 ```
 
-3. Basic error()
+3. Basic error() method.
 
 ```dart
 SnackFlow.error(
@@ -94,7 +95,7 @@ SnackFlow.error(
 
 ```
 
-4. Basic failed()
+4. Basic failed() method.
 
 ```dart
 SnackFlow.failed(
