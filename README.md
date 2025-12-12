@@ -32,9 +32,8 @@ It allows interactive, stylish, and fully customizable notifications effortlessl
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/7618c273-495a-45d7-a4b1-68ad58b65370" alt="GIF Preview" width="250", height="500" />
+  <img src="https://github.com/user-attachments/assets/3e1701a2-f611-4a62-931a-71c2284c9538" alt="Demo GIF" width="250", height="500">
 </p>
-
 
 
 
@@ -234,25 +233,28 @@ SnackFlow.error(
 
 ## Properties Reference
 
-| Property / Method    | Type             | Default / Description                                    |
-| -------------------- | ---------------- | -------------------------------------------------------- |
-| **message**          | String           | Text to display in the snack                             |
-| **backgroundColor**  | Color?           | Badge background color                                   |
-| **textColor**        | Color?           | Text & icon color; default white                         |
-| **icon**             | IconData?        | Optional leading icon                                    |
-| **leading**          | Widget?          | Optional custom leading widget                           |
-| **duration**         | Duration         | Auto-dismiss time; default 3s                            |
-| **borderRadius**     | double           | Rounded corners; default 10                              |
-| **position**         | SnackPosition    | top/bottom/center/left/right; default `bottom`           |
-| **verticalPosition** | VerticalPosition | For left/right: top/middle/bottom; default bottom        |
-| **actionLabel**      | String?          | Optional action button text (e.g., "UNDO")               |
-| **onAction**         | VoidCallback?    | Callback when action pressed                             |
-| **showClose**        | bool             | Show close “X”; default false                            |
-| **onDismiss**        | VoidCallback?    | Callback when snack is hidden                            |
-| **show()**           | Method           | Neutral/default notification; customizable colors & icon |
-| **success()**        | Method           | Success notification; green & check icon                 |
-| **failed()**         | Method           | Warning/failed notification; orange & warning icon       |
-| **error()**          | Method           | Error notification; red & error icon                     |
+| Method / Property    | Type             | Default / Description           |
+| -------------------- | ---------------- | -------------------------------|
+| **show()**           | Method           | Default/neutral notification   |
+| **success()**        | Method           | Green success notification     |
+| **failed()**         | Method           | Orange warning/failure         |
+| **error()**          | Method           | Red error notification         |
+| **message**          | String           | Text to show                   |
+| **backgroundColor**  | Color?           | Badge color (semi-transparent) |
+| **textColor**        | Color?           | Text/icon color (auto-adjust)  |
+| **icon**             | IconData?        | Leading icon                   |
+| **leading**          | Widget?          | Custom widget                  |
+| **duration**         | Duration         | Auto-dismiss                   |
+| **borderRadius**     | double           | Rounded corners (14)           |
+| **position**         | SnackPosition    | top/bottom/center/left/right  |
+| **verticalPosition** | VerticalPosition | For left/right: top/middle/bottom |
+| **actionLabel**      | String?          | Action button text             |
+| **onAction**         | VoidCallback?    | Action callback                |
+| **showClose**        | bool             | Show close button (true)       |
+| **onDismiss**        | VoidCallback?    | On hide callback               |
+| **title**            | String?          | Optional title                 |
+| **statusColor**      | Color?           | Leading/status color           |
+
 
 
 
