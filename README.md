@@ -32,7 +32,7 @@ It allows interactive, stylish, and fully customizable notifications effortlessl
 
 
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/3e1701a2-f611-4a62-931a-71c2284c9538" alt="Demo GIF" width="250", height="500">
+  <img src="https://github.com/user-attachments/assets/3e1701a2-f611-4a62-931a-71c2284c9538" alt="Demo GIF" width="250", height="530">
 </p>
 
 
