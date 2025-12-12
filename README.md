@@ -9,7 +9,21 @@
 
 ## Features
 
-A modern and fully customizable Flutter snack notification system that uses overlays to display beautiful, smooth alerts on any screen. It supports multiple screen positions, stylish slide animations, and optional action or undo buttons. You can show left, right, or center floating snack badges, add gentle haptic feedback, and even attach your own custom leading widgets. The system is also theme-aware, automatically adapting to both light and dark modes for a polished and consistent user experience.
+The SnackFlow Flutter package is a customizable overlay notification system that lets developers show modern, glassmorphic-style snack messages anywhere on the screen. It provides four default methods—show, success, failed, and error—so users can quickly display messages by type, e.g., SnackFlow.success(context, "Profile updated!"). Each method is fully customizable with parameters like title, backgroundColor, textColor, icon, leading widget, duration, borderRadius, position, verticalPosition, action buttons, and a close button.
+
+Features include glassmorphic design with blur, adaptive text color, multiple positions, vertical alignment, optional avatars/icons, action buttons, smooth slide animations, haptic feedback, and auto-dismissal. SnackFlow saves time, improves UX, and is perfect for notifications, alerts, warnings, and confirmations.
+
+Key Methods:
+
+    SnackFlow.show(...) – Neutral message
+    
+    SnackFlow.success(...) – Green success
+    
+    SnackFlow.failed(...) – Orange warning
+    
+    SnackFlow.error(...) – Red error
+
+It allows interactive, stylish, and fully customizable notifications effortlessly.
 
 
 
